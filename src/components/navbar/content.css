@@ -1,0 +1,45 @@
+.nav-down {
+  background-color: black;
+  color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 180px;
+  height: 80vh;
+}
+.first-row,
+.second-row,
+.third-row {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+.first,
+.second {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+}
+.icon {
+  color: #f5c518;
+}
+.context {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-weight: 500;
+  font-size: 24px;
+}
+.header-nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  padding-right: 100px;
+  padding-left: 100px;
+  align-items: center;
+  height: 42px;
+  background-color: black;
+  color: white;
+}
