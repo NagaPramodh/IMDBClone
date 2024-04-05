@@ -1,9 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Header.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import Navbar from "../navbar/navbar";
+
 const Header = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
+
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const handleSearchSubmit = (event) => {
+    event.preventDefault();
+    console.log(searchQuery, "searchQuery");
+    if (searchQuery.trim() !== "") {
+      navigate(`/movies/search/${encodeURIComponent(searchQuery)}`);
+    }
+  };
+
   return (
     <div className="header">
       <div className="headerLeft">
@@ -33,6 +49,16 @@ const Header = () => {
         <Link to="/movies/upcoming" style={{ textDecoration: "none" }}>
           <span>Upcoming</span>
         </Link>
+
+        <form onSubmit={handleSearchSubmit}>
+          <input
+            type="text"
+            placeholder="Search movies"
+            value={searchQuery}
+            onChange={handleSearchChange}
+          />
+          <button type="submit">Search</button>
+        </form>
       </div>
     </div>
   );
