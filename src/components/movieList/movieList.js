@@ -2,40 +2,40 @@ import React, { useEffect, useState } from "react";
 import "./movieList.css";
 import { useParams } from "react-router-dom";
 import Cards from "../card/card";
+import Button from "@mui/material/Button";
 
 const MovieList = () => {
   const [movieList, setMovieList] = useState([]);
+  const [page, setPage] = useState(1); // State for current page
   const { type, query } = useParams();
 
   useEffect(() => {
-    if (type) {
-      // If type exists in the URL, fetch movies by type
-      fetch(
-        `https://api.themoviedb.org/3/movie/${type}?api_key=4e44d9029b1270a757cddc766a1bcb63&language=en-US`
-      )
-        .then((res) => res.json())
-        .then((data) => setMovieList(data.results))
-        .catch((error) => console.error("Error fetching data:", error));
-    } else if (query) {
-      // If query exists in the URL, fetch movies by search query
-      fetch(
-        `https://api.themoviedb.org/3/search/movie?api_key=4e44d9029b1270a757cddc766a1bcb63&language=en-US&query=${encodeURIComponent(
+    // Function to fetch movie data based on type or query and page number
+    const fetchMovies = () => {
+      let url = "";
+      if (type) {
+        url = `https://api.themoviedb.org/3/movie/${type}?api_key=4e44d9029b1270a757cddc766a1bcb63&language=en-US&page=${page}`;
+      } else if (query) {
+        url = `https://api.themoviedb.org/3/search/movie?api_key=4e44d9029b1270a757cddc766a1bcb63&language=en-US&query=${encodeURIComponent(
           query
-        )}&page=1`
-      )
+        )}&page=${page}`;
+      } else {
+        url = `https://api.themoviedb.org/3/movie/popular?api_key=4e44d9029b1270a757cddc766a1bcb63&language=en-US&page=${page}`;
+      }
+
+      fetch(url)
         .then((res) => res.json())
         .then((data) => setMovieList(data.results))
         .catch((error) => console.error("Error fetching data:", error));
-    } else {
-      // Default to fetching popular movies
-      fetch(
-        `https://api.themoviedb.org/3/movie/popular?api_key=4e44d9029b1270a757cddc766a1bcb63&language=en-US`
-      )
-        .then((res) => res.json())
-        .then((data) => setMovieList(data.results))
-        .catch((error) => console.error("Error fetching data:", error));
-    }
-  }, [type, query]);
+    };
+
+    fetchMovies(); // Fetch movies when type, query, or page changes
+  }, [type, query, page]);
+
+  // Function to handle pagination
+  const handlePageChange = (newPage) => {
+    setPage(newPage);
+  };
 
   return (
     <div className="movie__list">
@@ -50,6 +50,26 @@ const MovieList = () => {
         {movieList.map((movie) => (
           <Cards key={movie.id} movie={movie} />
         ))}
+      </div>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "center",
+          marginTop: 40,
+          gap: 20,
+        }}
+      >
+        <Button
+          variant="outlined"
+          onClick={() => handlePageChange(page - 1)}
+          // disabled={page === 1}
+        >
+          Previous
+        </Button>
+        <Button variant="contained" onClick={() => handlePageChange(page + 1)}>
+          Next
+        </Button>
       </div>
     </div>
   );

@@ -3,6 +3,9 @@ import "./Header.css";
 import { Link, useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import Navbar from "../navbar/navbar";
+import TextField from "@mui/material/TextField";
+import IconButton from "@mui/material/IconButton";
+import SearchIcon from "@mui/icons-material/Search";
 
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -50,7 +53,7 @@ const Header = () => {
           <span>Upcoming</span>
         </Link>
 
-        <form onSubmit={handleSearchSubmit}>
+        {/* <form onSubmit={handleSearchSubmit}>
           <input
             type="text"
             placeholder="Search movies"
@@ -58,6 +61,20 @@ const Header = () => {
             onChange={handleSearchChange}
           />
           <button type="submit">Search</button>
+        </form> */}
+      </div>
+      <div className="header-right">
+        <form onSubmit={handleSearchSubmit}>
+          <TextField
+            type="text"
+            placeholder="Search movies"
+            value={searchQuery}
+            onChange={handleSearchChange}
+            sx={{ backgroundColor: "white" }}
+          />
+          <IconButton type="submit" aria-label="search">
+            <SearchIcon />
+          </IconButton>
         </form>
       </div>
     </div>
